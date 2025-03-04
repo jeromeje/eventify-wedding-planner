@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { Calendar, MapPin, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface VenueCardProps {
   id: string;
@@ -22,6 +23,23 @@ const VenueCard = ({
   rating
 }: VenueCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCheckAvailability = () => {
+    navigate('/booking', { 
+      state: { 
+        venue: {
+          id,
+          name,
+          location,
+          image,
+          price,
+          capacity,
+          rating
+        }
+      }
+    });
+  };
 
   return (
     <div className="group h-full rounded-xl overflow-hidden bg-white border border-border hover:shadow-lg transition-all duration-300 animate-scale-in">
@@ -78,6 +96,7 @@ const VenueCard = ({
           
           <button 
             className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center"
+            onClick={handleCheckAvailability}
           >
             Check availability
             <Calendar className="ml-1 w-4 h-4" />
