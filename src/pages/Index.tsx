@@ -130,10 +130,11 @@ const Index = () => {
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <a 
-                  href="/register" 
-                  className="px-6 py-3 text-white font-medium bg-primary hover:bg-primary/90 rounded-md transition-colors"
+                  href="/venues" 
+                  className="px-6 py-3 text-white font-medium bg-primary hover:bg-primary/90 rounded-md transition-colors flex items-center justify-center"
                 >
-                  Get Started
+                  <Calendar className="mr-2 h-5 w-5" />
+                  Book The Venue
                 </a>
                 <a 
                   href="/contact" 

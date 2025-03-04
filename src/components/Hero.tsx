@@ -1,5 +1,5 @@
 
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
@@ -32,7 +32,8 @@ const Hero = () => {
               to="/venues" 
               className="group px-6 py-3 text-white font-medium bg-primary hover:bg-primary/90 rounded-md transition-all duration-300 flex items-center justify-center"
             >
-              Explore Venues
+              <Calendar className="mr-2 h-5 w-5" />
+              Book The Venue
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
