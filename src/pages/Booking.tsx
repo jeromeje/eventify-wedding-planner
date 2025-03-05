@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Users, Clock, Info, ArrowLeft, Sparkles, Flower, Party, Lightbulb, Package } from 'lucide-react';
+import { Calendar, Users, Clock, Info, ArrowLeft, Sparkles, Flower, Music, Lightbulb, Package } from 'lucide-react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 
@@ -27,23 +26,19 @@ const BookingPage = () => {
     }
   });
 
-  // Handle login form input changes
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
   };
 
-  // Handle booking form input changes
   const handleBookingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setBookingDetails({ ...bookingDetails, [name]: value });
   };
 
-  // Handle service checkbox changes
   const handleServiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     
-    // If full package is selected, select all services
     if (name === 'fullPackage' && checked) {
       setBookingDetails({
         ...bookingDetails,
@@ -60,7 +55,6 @@ const BookingPage = () => {
         services: {
           ...bookingDetails.services,
           [name]: checked,
-          // If any individual service is unchecked, uncheck fullPackage too
           fullPackage: name === 'fullPackage' ? checked : 
             checked && name !== 'fullPackage' ? 
               bookingDetails.services.decoration && 
@@ -71,29 +65,23 @@ const BookingPage = () => {
     }
   };
 
-  // Handle login submission
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Login credentials:', loginForm);
-    // In a real app, this would authenticate with a backend
     setIsLoggedIn(true);
     setStep(2);
   };
 
-  // Handle guest booking (skip login)
   const handleContinueAsGuest = () => {
     setStep(2);
   };
 
-  // Handle booking submission
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Booking details:', bookingDetails);
-    // In a real app, this would send booking details to a backend
     setStep(3);
   };
 
-  // Handle going back to previous step
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
@@ -102,7 +90,6 @@ const BookingPage = () => {
     }
   };
 
-  // Calculate estimated cost based on selected services
   const calculateEstimatedCost = () => {
     const basePrice = venue?.price || 1000;
     let totalPrice = basePrice;
@@ -133,7 +120,6 @@ const BookingPage = () => {
           </button>
           
           <div className="max-w-3xl mx-auto">
-            {/* Header with venue details if provided */}
             {venue && (
               <div className="mb-8">
                 <h1 className="text-3xl font-medium mb-2">{venue.name}</h1>
@@ -141,7 +127,6 @@ const BookingPage = () => {
               </div>
             )}
             
-            {/* Step 1: Login or Continue as Guest */}
             {step === 1 && (
               <div className="bg-white rounded-xl border border-border p-8 animate-fade-up">
                 <h2 className="text-2xl font-medium mb-6">Sign in to book</h2>
@@ -203,7 +188,6 @@ const BookingPage = () => {
               </div>
             )}
             
-            {/* Step 2: Booking Form */}
             {step === 2 && (
               <div className="bg-white rounded-xl border border-border p-8 animate-fade-up">
                 <h2 className="text-2xl font-medium mb-6">Book Your Event</h2>
@@ -283,7 +267,6 @@ const BookingPage = () => {
                     />
                   </div>
 
-                  {/* Vendor Services Section */}
                   <div className="mt-6">
                     <h3 className="text-lg font-medium mb-3 flex items-center">
                       <Sparkles className="w-5 h-5 mr-2 text-primary" />
@@ -321,7 +304,7 @@ const BookingPage = () => {
                         />
                         <div>
                           <label htmlFor="party" className="flex items-center font-medium">
-                            <Party className="w-4 h-4 mr-2 text-purple-500" />
+                            <Music className="w-4 h-4 mr-2 text-purple-500" />
                             Party Planning
                           </label>
                           <p className="text-sm text-muted-foreground mt-1">
@@ -372,7 +355,6 @@ const BookingPage = () => {
                     </div>
                   </div>
 
-                  {/* Estimated Cost Section */}
                   <div className="bg-primary/5 p-4 rounded-lg">
                     <h3 className="text-md font-medium mb-2">Estimated Cost</h3>
                     <p className="text-2xl font-semibold text-primary">
@@ -409,7 +391,6 @@ const BookingPage = () => {
               </div>
             )}
             
-            {/* Step 3: Confirmation */}
             {step === 3 && (
               <div className="bg-white rounded-xl border border-border p-8 animate-fade-up text-center">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
