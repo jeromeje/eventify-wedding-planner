@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Users, Clock, Info, ArrowLeft } from 'lucide-react';
+import { Calendar, Users, Clock, Info, ArrowLeft, Sparkles, Flower, Party, Lightbulb, Package } from 'lucide-react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 
@@ -18,7 +18,13 @@ const BookingPage = () => {
     startTime: '',
     endTime: '',
     guestCount: '',
-    specialRequirements: ''
+    specialRequirements: '',
+    services: {
+      decoration: false,
+      party: false,
+      lighting: false,
+      fullPackage: false
+    }
   });
 
   // Handle login form input changes
@@ -31,6 +37,38 @@ const BookingPage = () => {
   const handleBookingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setBookingDetails({ ...bookingDetails, [name]: value });
+  };
+
+  // Handle service checkbox changes
+  const handleServiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    
+    // If full package is selected, select all services
+    if (name === 'fullPackage' && checked) {
+      setBookingDetails({
+        ...bookingDetails,
+        services: {
+          decoration: true,
+          party: true,
+          lighting: true,
+          fullPackage: true
+        }
+      });
+    } else {
+      setBookingDetails({
+        ...bookingDetails,
+        services: {
+          ...bookingDetails.services,
+          [name]: checked,
+          // If any individual service is unchecked, uncheck fullPackage too
+          fullPackage: name === 'fullPackage' ? checked : 
+            checked && name !== 'fullPackage' ? 
+              bookingDetails.services.decoration && 
+              bookingDetails.services.party && 
+              bookingDetails.services.lighting : false
+        }
+      });
+    }
   };
 
   // Handle login submission
@@ -62,6 +100,22 @@ const BookingPage = () => {
     } else {
       navigate(-1);
     }
+  };
+
+  // Calculate estimated cost based on selected services
+  const calculateEstimatedCost = () => {
+    const basePrice = venue?.price || 1000;
+    let totalPrice = basePrice;
+    
+    if (bookingDetails.services.fullPackage) {
+      return basePrice * 1.5; // 50% extra for full package
+    }
+    
+    if (bookingDetails.services.decoration) totalPrice += basePrice * 0.2;
+    if (bookingDetails.services.party) totalPrice += basePrice * 0.15;
+    if (bookingDetails.services.lighting) totalPrice += basePrice * 0.1;
+    
+    return totalPrice;
   };
 
   return (
@@ -228,6 +282,106 @@ const BookingPage = () => {
                       required
                     />
                   </div>
+
+                  {/* Vendor Services Section */}
+                  <div className="mt-6">
+                    <h3 className="text-lg font-medium mb-3 flex items-center">
+                      <Sparkles className="w-5 h-5 mr-2 text-primary" />
+                      Select Additional Services
+                    </h3>
+                    <div className="bg-muted/30 p-5 rounded-lg space-y-4">
+                      <div className="flex items-start">
+                        <input
+                          type="checkbox"
+                          id="decoration"
+                          name="decoration"
+                          checked={bookingDetails.services.decoration}
+                          onChange={handleServiceChange}
+                          className="mt-1 mr-3"
+                        />
+                        <div>
+                          <label htmlFor="decoration" className="flex items-center font-medium">
+                            <Flower className="w-4 h-4 mr-2 text-pink-500" />
+                            Decoration Services
+                          </label>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Professional venue decoration with flowers, lighting, and themed setups.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start">
+                        <input
+                          type="checkbox"
+                          id="party"
+                          name="party"
+                          checked={bookingDetails.services.party}
+                          onChange={handleServiceChange}
+                          className="mt-1 mr-3"
+                        />
+                        <div>
+                          <label htmlFor="party" className="flex items-center font-medium">
+                            <Party className="w-4 h-4 mr-2 text-purple-500" />
+                            Party Planning
+                          </label>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Complete party coordination including catering, entertainment, and photography.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start">
+                        <input
+                          type="checkbox"
+                          id="lighting"
+                          name="lighting"
+                          checked={bookingDetails.services.lighting}
+                          onChange={handleServiceChange}
+                          className="mt-1 mr-3"
+                        />
+                        <div>
+                          <label htmlFor="lighting" className="flex items-center font-medium">
+                            <Lightbulb className="w-4 h-4 mr-2 text-amber-500" />
+                            Lighting & Sound
+                          </label>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Professional lighting setup and sound system for your event.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start pt-2 border-t border-border">
+                        <input
+                          type="checkbox"
+                          id="fullPackage"
+                          name="fullPackage"
+                          checked={bookingDetails.services.fullPackage}
+                          onChange={handleServiceChange}
+                          className="mt-1 mr-3"
+                        />
+                        <div>
+                          <label htmlFor="fullPackage" className="flex items-center font-medium">
+                            <Package className="w-4 h-4 mr-2 text-emerald-500" />
+                            Full Package (15% Discount)
+                          </label>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Includes all services above plus premium benefits and dedicated event manager.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Estimated Cost Section */}
+                  <div className="bg-primary/5 p-4 rounded-lg">
+                    <h3 className="text-md font-medium mb-2">Estimated Cost</h3>
+                    <p className="text-2xl font-semibold text-primary">
+                      ${calculateEstimatedCost().toLocaleString()}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Final price may vary based on specific requirements and customizations.
+                    </p>
+                  </div>
                   
                   <div>
                     <label htmlFor="specialRequirements" className="block text-sm font-medium mb-1">
@@ -292,6 +446,21 @@ const BookingPage = () => {
                       <div>
                         <p className="text-muted-foreground">Guests</p>
                         <p className="font-medium">{bookingDetails.guestCount}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <Package className="w-4 h-4 mr-2 mt-0.5 text-muted-foreground" />
+                      <div>
+                        <p className="text-muted-foreground">Services</p>
+                        <p className="font-medium">
+                          {bookingDetails.services.fullPackage 
+                            ? "Full Package" 
+                            : [
+                                bookingDetails.services.decoration ? "Decoration" : "",
+                                bookingDetails.services.party ? "Party Planning" : "",
+                                bookingDetails.services.lighting ? "Lighting" : ""
+                              ].filter(Boolean).join(", ") || "None"}
+                        </p>
                       </div>
                     </div>
                   </div>
