@@ -1,6 +1,7 @@
+
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Users, Clock, Info, ArrowLeft, Sparkles } from 'lucide-react';
+import { Calendar, Users, Clock, Info, ArrowLeft, Sparkles, Package } from 'lucide-react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import ServicesSection from '../components/ServicesSection';
