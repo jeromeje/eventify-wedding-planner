@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Users, Clock, Info, ArrowLeft, Sparkles, Flower, Music, Lightbulb, Package } from 'lucide-react';
+import { Calendar, Users, Clock, Info, ArrowLeft, Sparkles } from 'lucide-react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import ServicesSection from '../components/ServicesSection';
 
 const BookingPage = () => {
   const navigate = useNavigate();
@@ -272,86 +273,12 @@ const BookingPage = () => {
                       <Sparkles className="w-5 h-5 mr-2 text-primary" />
                       Select Additional Services
                     </h3>
-                    <div className="bg-muted/30 p-5 rounded-lg space-y-4">
-                      <div className="flex items-start">
-                        <input
-                          type="checkbox"
-                          id="decoration"
-                          name="decoration"
-                          checked={bookingDetails.services.decoration}
-                          onChange={handleServiceChange}
-                          className="mt-1 mr-3"
-                        />
-                        <div>
-                          <label htmlFor="decoration" className="flex items-center font-medium">
-                            <Flower className="w-4 h-4 mr-2 text-pink-500" />
-                            Decoration Services
-                          </label>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Professional venue decoration with flowers, lighting, and themed setups.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start">
-                        <input
-                          type="checkbox"
-                          id="party"
-                          name="party"
-                          checked={bookingDetails.services.party}
-                          onChange={handleServiceChange}
-                          className="mt-1 mr-3"
-                        />
-                        <div>
-                          <label htmlFor="party" className="flex items-center font-medium">
-                            <Music className="w-4 h-4 mr-2 text-purple-500" />
-                            Party Planning
-                          </label>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Complete party coordination including catering, entertainment, and photography.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start">
-                        <input
-                          type="checkbox"
-                          id="lighting"
-                          name="lighting"
-                          checked={bookingDetails.services.lighting}
-                          onChange={handleServiceChange}
-                          className="mt-1 mr-3"
-                        />
-                        <div>
-                          <label htmlFor="lighting" className="flex items-center font-medium">
-                            <Lightbulb className="w-4 h-4 mr-2 text-amber-500" />
-                            Lighting & Sound
-                          </label>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Professional lighting setup and sound system for your event.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start pt-2 border-t border-border">
-                        <input
-                          type="checkbox"
-                          id="fullPackage"
-                          name="fullPackage"
-                          checked={bookingDetails.services.fullPackage}
-                          onChange={handleServiceChange}
-                          className="mt-1 mr-3"
-                        />
-                        <div>
-                          <label htmlFor="fullPackage" className="flex items-center font-medium">
-                            <Package className="w-4 h-4 mr-2 text-emerald-500" />
-                            Full Package (15% Discount)
-                          </label>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Includes all services above plus premium benefits and dedicated event manager.
-                          </p>
-                        </div>
-                      </div>
+                    <div className="bg-muted/30 p-5 rounded-lg">
+                      <ServicesSection 
+                        services={bookingDetails.services}
+                        onChange={handleServiceChange}
+                        basePrice={venue?.price || 1000}
+                      />
                     </div>
                   </div>
 
