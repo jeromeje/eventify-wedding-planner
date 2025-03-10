@@ -4,6 +4,7 @@ import { PlusCircle, ImageIcon, DollarSign, Type, FileText } from 'lucide-react'
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import AdminServiceForm from '../components/AdminServiceForm';
+import AdminVenueForm from '../components/AdminVenueForm';
 
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState<'venues' | 'services'>('venues');
